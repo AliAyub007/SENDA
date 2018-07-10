@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements SensorEventListener
     List<String> SensorName = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     ListView lv;
-    public ArrayList<String> selectedItems=new ArrayList<String>();
+    public static ArrayList<String> selectedItems=new ArrayList<String>();
 
     //Sensor Names
     Sensor mAccelerometer, mOientation, mLight, mProximity, mGravity, mLinearAcceleration, mRotation, mMotion, mStepCounter, mGeomagnetic;
@@ -90,7 +90,7 @@ public class MainActivity extends Activity implements SensorEventListener
 
     // Calibrated Step Counter Data (TYPE_STEP_COUNTER)!
     static float stepCounter;
-    static {   stepCounter      = 0;
+    static {   stepCounter = 0;
 
     }
 
@@ -168,7 +168,7 @@ public class MainActivity extends Activity implements SensorEventListener
 //        tvY = (TextView)findViewById(R.id.axisY);
 //        tvZ = (TextView)findViewById(R.id.axisZ);
 
-        tv.setText("Available Sensors: ");
+        tv.setText("Available Streams: ");
         //showMessage( "Attempting to send LSL markers: ");
         //setContentView(tv);
         msensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
@@ -177,32 +177,32 @@ public class MainActivity extends Activity implements SensorEventListener
 
         assert msensorManager != null;
         mAccelerometer = msensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mOientation = msensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+//        mOientation = msensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         mLight = msensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         mProximity = msensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         mGravity = msensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         mLinearAcceleration = msensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         mRotation = msensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mMotion = msensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+//            mMotion = msensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
+//        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ) {
             mStepCounter = msensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-            mGeomagnetic = msensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
         }
 
 
         //Registering listeners for Sensors
-        msensorManager.registerListener(this, mAccelerometer, 20000);//SensorManager.SENSOR_DELAY_FASTEST);
-        msensorManager.registerListener(this, mOientation, SensorManager.SENSOR_DELAY_NORMAL);
+        msensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);//SensorManager.SENSOR_DELAY_FASTEST);
+//        msensorManager.registerListener(this, mOientation, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mGravity, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mLinearAcceleration, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mRotation, SensorManager.SENSOR_DELAY_NORMAL);
-        msensorManager.registerListener(this, mMotion, SensorManager.SENSOR_DELAY_NORMAL);
-        msensorManager.registerListener(this, mStepCounter, SensorManager.SENSOR_DELAY_NORMAL);
-        msensorManager.registerListener(this, mGeomagnetic, SensorManager.SENSOR_DELAY_NORMAL);
+//        msensorManager.registerListener(this, mMotion, SensorManager.SENSOR_DELAY_NORMAL);
+
+        msensorManager.registerListener(this, mStepCounter, SensorManager.SENSOR_DELAY_UI);
+//        msensorManager.registerListener(this, mGeomagnetic, SensorManager.SENSOR_DELAY_NORMAL);
 
 
 
@@ -214,25 +214,30 @@ public class MainActivity extends Activity implements SensorEventListener
         adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_view_text, R.id.txt_title, SensorName);
         lv.setAdapter(adapter);
 
-        for (int i = 1; i < sensor.size(); i++) {
+        SensorName.add("Accelerometer");
+        SensorName.add("Light");
+        SensorName.add("Proximity");
+        SensorName.add("Gravity");
+        SensorName.add("Linear Acceleration");
+        SensorName.add("Rotation Vector");
+        SensorName.add("Step Count");
 
-            SensorName.add(sensor.get(i).getName());
-        }
+        //System.out.println(sensor.get(i).getName());
 
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // selected item
-                String selectedItem = ((TextView) view).getText().toString();
-                if(selectedItems.contains(selectedItem))
-                    selectedItems.remove(selectedItem); //remove deselected item from the list of selected items
-                else
-                    selectedItems.add(selectedItem); //add selected item to the list of selected items
-
-                showSelectedItems();
-            }
-
-        });
+//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // selected item
+//                String selectedItem = ((TextView) view).getText().toString();
+//                if(selectedItems.contains(selectedItem))
+//                    selectedItems.remove(selectedItem); //remove deselected item from the list of selected items
+//                else
+//                    selectedItems.add(selectedItem); //add selected item to the list of selected items
+//
+//                showSelectedItems();
+//            }
+//
+//        });
 
     }
 

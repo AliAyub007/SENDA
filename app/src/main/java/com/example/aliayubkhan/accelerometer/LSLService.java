@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 
+
 /**
  * Created by aliayubkhan on 19/04/2018.
  */
@@ -68,18 +69,19 @@ public class LSLService extends Service {
             Log.i(TAG, "Service onStartCommand");
             Toast.makeText(this,"Starting LSL!", Toast.LENGTH_SHORT).show();
 
+
             //Creating new thread for my service
             //Always write your long running tasks in a separate thread, to avoid ANR
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    accelerometer = new LSL.StreamInfo("Accelerometer", "sensor", 3, 0.02, LSL.ChannelFormat.float32, "myuid324457");
-                    light = new LSL.StreamInfo("Light", "sensor", 1, 0.005, LSL.ChannelFormat.float32, "myuid324457");
-                    proximity = new LSL.StreamInfo("Proximity", "sensor", 1,0.005, LSL.ChannelFormat.float32, "myuid324457");
-                    linearAcceleration = new LSL.StreamInfo("LinearAcceleration", "sensor", 3,0.005, LSL.ChannelFormat.float32, "myuid324457");
-                    rotation = new LSL.StreamInfo("Rotation", "sensor", 4, 0.005, LSL.ChannelFormat.float32, "myuid324457");
-                    gravity = new LSL.StreamInfo("Gravity", "sensor", 3, 0.005, LSL.ChannelFormat.float32, "myuid324457");
-                    stepCount = new LSL.StreamInfo("StepCount", "sensor", 1, 0.005, LSL.ChannelFormat.float32, "myuid324457");
+                    accelerometer = new LSL.StreamInfo("Accelerometer", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuid324457");
+                    light = new LSL.StreamInfo("Light", "EEG", 1, 100, LSL.ChannelFormat.float32, "myuid324457");
+                    proximity = new LSL.StreamInfo("Proximity", "EEG", 1,100, LSL.ChannelFormat.float32, "myuid324457");
+                    linearAcceleration = new LSL.StreamInfo("LinearAcceleration", "EEG", 3,100, LSL.ChannelFormat.float32, "myuid324457");
+                    rotation = new LSL.StreamInfo("Rotation", "EEG", 4, 100, LSL.ChannelFormat.float32, "myuid324457");
+                    gravity = new LSL.StreamInfo("Gravity", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuid324457");
+                    stepCount = new LSL.StreamInfo("StepCount", "EEG", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuid324457");
 //                    audio = new LSL.StreamInfo("Audio", "audio", 1, 0.005, LSL.ChannelFormat.int16, "myuid324457");
 
                     //showMessage("Creating an outlet...");
@@ -170,6 +172,7 @@ public class LSLService extends Service {
 //                format = s.format(new Date());
 //                ts = Double.parseDouble(format);
 //                System.out.println(ts);
+
                         assert accelerometerOutlet != null;
                         accelerometerOutlet.push_sample(accelerometerData);
                         lightOutlet.push_sample(lightData);
@@ -218,6 +221,7 @@ public class LSLService extends Service {
 
         Log.i(TAG, "Service onDestroy");
         Toast.makeText(this,"Closing LSL!", Toast.LENGTH_SHORT).show();
+        MainActivity.stepCounter = 0;
 //        recorder.stop();
 //        recorder.release();
 
