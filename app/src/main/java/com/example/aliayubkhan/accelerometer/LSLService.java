@@ -75,13 +75,13 @@ public class LSLService extends Service {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    accelerometer = new LSL.StreamInfo("Accelerometer", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuid324457");
-                    light = new LSL.StreamInfo("Light", "EEG", 1, 100, LSL.ChannelFormat.float32, "myuid324457");
-                    proximity = new LSL.StreamInfo("Proximity", "EEG", 1,100, LSL.ChannelFormat.float32, "myuid324457");
-                    linearAcceleration = new LSL.StreamInfo("LinearAcceleration", "EEG", 3,100, LSL.ChannelFormat.float32, "myuid324457");
-                    rotation = new LSL.StreamInfo("Rotation", "EEG", 4, 100, LSL.ChannelFormat.float32, "myuid324457");
-                    gravity = new LSL.StreamInfo("Gravity", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuid324457");
-                    stepCount = new LSL.StreamInfo("StepCount", "EEG", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuid324457");
+                    accelerometer = new LSL.StreamInfo("Accelerometer", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidaccelerometer");
+                    light = new LSL.StreamInfo("Light", "EEG", 1, 100, LSL.ChannelFormat.float32, "myuidlight");
+                    proximity = new LSL.StreamInfo("Proximity", "EEG", 1,100, LSL.ChannelFormat.float32, "myuidproximity");
+                    linearAcceleration = new LSL.StreamInfo("LinearAcceleration", "EEG", 3,100, LSL.ChannelFormat.float32, "myuidlinearacceleration");
+                    rotation = new LSL.StreamInfo("Rotation", "EEG", 4, 100, LSL.ChannelFormat.float32, "myuidrotation");
+                    gravity = new LSL.StreamInfo("Gravity", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidgravity");
+                    stepCount = new LSL.StreamInfo("StepCount", "EEG", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuidstep");
 //                    audio = new LSL.StreamInfo("Audio", "audio", 1, 0.005, LSL.ChannelFormat.int16, "myuid324457");
 
                     //showMessage("Creating an outlet...");
