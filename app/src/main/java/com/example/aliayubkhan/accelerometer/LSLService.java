@@ -82,7 +82,7 @@ public class LSLService extends Service {
                     rotation = new LSL.StreamInfo("Rotation", "EEG", 4, 100, LSL.ChannelFormat.float32, "myuidrotation");
                     gravity = new LSL.StreamInfo("Gravity", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidgravity");
                     stepCount = new LSL.StreamInfo("StepCount", "EEG", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuidstep");
-//                    audio = new LSL.StreamInfo("Audio", "audio", 1, 0.005, LSL.ChannelFormat.int16, "myuid324457");
+                    audio = new LSL.StreamInfo("Audio", "audio", 1, 44100, LSL.ChannelFormat.double64, "myuid324457");
 
                     //showMessage("Creating an outlet...");
                     //showText("Creating an outlet...");
@@ -94,32 +94,32 @@ public class LSLService extends Service {
                         rotationOutlet = new LSL.StreamOutlet(rotation);
                         gravityOutlet = new LSL.StreamOutlet(gravity);
                         stepCountOutlet = new LSL.StreamOutlet(stepCount);
-//                        audioOutlet = new LSL.StreamOutlet(audio);
+                        audioOutlet = new LSL.StreamOutlet(audio);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-//                    //For Audio
-//                    try {
-//                        byte[] buffer = new byte[BUFFER_SIZE];
-//
-//                        recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
-//                                RECORDING_RATE, CHANNEL, FORMAT, BUFFER_SIZE * 10);
-//
-//                        recorder.startRecording();
-//
-//                        while (currentlySendingAudio) {
-//
-//                            // read the data into the buffer
-//                            readFully(buffer, 0, buffer.length);
+                    //For Audio
+                    try {
+                        byte[] buffer = new byte[BUFFER_SIZE];
+
+                        recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
+                                RECORDING_RATE, CHANNEL, FORMAT, BUFFER_SIZE * 10);
+
+                        recorder.startRecording();
+
+                        while (currentlySendingAudio) {
+
+                            // read the data into the buffer
+                            readFully(buffer, 0, buffer.length);
 //                            System.out.println(Arrays.toString(buffer));
-//                            audioOutlet.push_sample(buffer);
-//                        }
-//
-//                        Log.d(TAG, "AudioRecord finished recording");
-//                    } catch (Exception e) {
-//                        Log.e(TAG, "Exception: " + e);
-//                    }
+                            audioOutlet.push_sample(buffer);
+                        }
+
+                        Log.d(TAG, "AudioRecord finished recording");
+                    } catch (Exception e) {
+                        Log.e(TAG, "Exception: " + e);
+                    }
 
 //            @SuppressLint("SimpleDateFormat") SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
 //            String format;
@@ -222,8 +222,8 @@ public class LSLService extends Service {
         Log.i(TAG, "Service onDestroy");
         Toast.makeText(this,"Closing LSL!", Toast.LENGTH_SHORT).show();
         MainActivity.stepCounter = 0;
-//        recorder.stop();
-//        recorder.release();
+        recorder.stop();
+        recorder.release();
 
         accelerometerOutlet.close();
         accelerometer.destroy();
@@ -246,7 +246,10 @@ public class LSLService extends Service {
         stepCountOutlet.close();
         stepCount.destroy();
 
-//        currentlySendingAudio = false;
+        audioOutlet.close();
+        audio.destroy();
+
+        currentlySendingAudio = false;
 
         if (null != recorder) {
             try{
