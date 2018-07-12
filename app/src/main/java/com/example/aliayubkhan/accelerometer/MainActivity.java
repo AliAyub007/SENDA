@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +22,6 @@ import java.util.List;
 public class MainActivity extends Activity implements SensorEventListener
 {
     static TextView tv;
-    TextView tvX;
-    TextView tvY;
-    TextView tvZ;
     Button start, stop;
 
 //    void showMessage(String string) {
@@ -164,9 +160,6 @@ public class MainActivity extends Activity implements SensorEventListener
                 //stopAsyncTask();
             }
         });
-//        tvX = (TextView)findViewById(R.id.axisX);
-//        tvY = (TextView)findViewById(R.id.axisY);
-//        tvZ = (TextView)findViewById(R.id.axisZ);
 
         tv.setText("Available Sensors: ");
         //showMessage( "Attempting to send LSL markers: ");
