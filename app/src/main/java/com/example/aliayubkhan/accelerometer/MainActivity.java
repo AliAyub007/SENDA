@@ -145,7 +145,6 @@ public class MainActivity extends Activity implements SensorEventListener
             public void onClick(View v) {
                 if(!isRunning){
                     startService(intent);
-                    LSLService.currentlySendingAudio = true;
                     //startAsyncTask(ts);
                 }
 

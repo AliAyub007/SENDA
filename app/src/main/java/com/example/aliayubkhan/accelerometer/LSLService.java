@@ -42,12 +42,15 @@ public class LSLService extends Service {
     private static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     private static final int FORMAT = AudioFormat.ENCODING_PCM_16BIT;
 
+
     // the audio recorder
     private AudioRecord recorder;
 
     // the minimum buffer size needed for audio recording
     private static int BUFFER_SIZE = AudioRecord.getMinBufferSize(
             RECORDING_RATE, CHANNEL, FORMAT);
+
+    byte[] buffer = new byte[BUFFER_SIZE];
 
     // are we currently sending audio data
     public static boolean currentlySendingAudio = false;
@@ -82,7 +85,7 @@ public class LSLService extends Service {
                     rotation = new LSL.StreamInfo("Rotation", "EEG", 4, 100, LSL.ChannelFormat.float32, "myuidrotation");
                     gravity = new LSL.StreamInfo("Gravity", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidgravity");
                     stepCount = new LSL.StreamInfo("StepCount", "EEG", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuidstep");
-                    audio = new LSL.StreamInfo("Audio", "audio", 1, 44100, LSL.ChannelFormat.double64, "myuid324457");
+                    audio = new LSL.StreamInfo("Audio", "audio", 1, 44100, LSL.ChannelFormat.float32, "myuid324457");
 
                     //showMessage("Creating an outlet...");
                     //showText("Creating an outlet...");
@@ -101,20 +104,20 @@ public class LSLService extends Service {
 
                     //For Audio
                     try {
-                        byte[] buffer = new byte[BUFFER_SIZE];
+
 
                         recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
                                 RECORDING_RATE, CHANNEL, FORMAT, BUFFER_SIZE * 10);
 
                         recorder.startRecording();
 
-                        while (currentlySendingAudio) {
-
-                            // read the data into the buffer
-                            readFully(buffer, 0, buffer.length);
-//                            System.out.println(Arrays.toString(buffer));
-                            audioOutlet.push_sample(buffer);
-                        }
+//                        while (currentlySendingAudio) {
+//
+//                            // read the data into the buffer
+////                            readFully(buffer, 0, buffer.length);
+//////                            System.out.println(Arrays.toString(buffer));
+////                            audioOutlet.push_sample(buffer);
+//                        }
 
                         Log.d(TAG, "AudioRecord finished recording");
                     } catch (Exception e) {
@@ -173,6 +176,9 @@ public class LSLService extends Service {
 //                ts = Double.parseDouble(format);
 //                System.out.println(ts);
 
+                        readFully(buffer, 0, buffer.length);
+
+
                         assert accelerometerOutlet != null;
                         accelerometerOutlet.push_sample(accelerometerData);
                         lightOutlet.push_sample(lightData);
@@ -181,6 +187,10 @@ public class LSLService extends Service {
                         rotationOutlet.push_sample(rotationData);
                         gravityOutlet.push_sample(gravityData);
                         stepCountOutlet.push_sample(stepCountData);
+//                            System.out.println(Arrays.toString(buffer));
+//                        audioOutlet.push_sample(buffer);
+                        audioOutlet.push_chunk(buffer);
+
 //                try
 //                    sleep(10);
 //                } catch (InterruptedException e) {
@@ -248,8 +258,6 @@ public class LSLService extends Service {
 
         audioOutlet.close();
         audio.destroy();
-
-        currentlySendingAudio = false;
 
         if (null != recorder) {
             try{
