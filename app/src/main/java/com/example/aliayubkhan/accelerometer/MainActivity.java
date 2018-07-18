@@ -1,20 +1,26 @@
 package com.example.aliayubkhan.accelerometer;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +53,13 @@ public class MainActivity extends Activity implements SensorEventListener
     //Sensor Names
     Sensor mAccelerometer, mOientation, mLight, mProximity, mGravity, mLinearAcceleration, mRotation, mMotion, mStepCounter, mGeomagnetic;
 
+    //Requesting run-time permissions
+
+    //Create placeholder for user's consent to record_audio permission.
+    //This will be used in handling callback
+    private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
+
+    public static boolean audioPermission = true;
 
     //Initializing Sensor data Variables
 
@@ -133,6 +146,8 @@ public class MainActivity extends Activity implements SensorEventListener
         start = (Button)findViewById(R.id.startLSL);
         stop = (Button)findViewById(R.id.stopLSL);
 
+        requestAudioPermissions();
+
         final Intent intent = new Intent(this, LSLService.class);
 
 
@@ -144,6 +159,9 @@ public class MainActivity extends Activity implements SensorEventListener
             @Override
             public void onClick(View v) {
                 if(!isRunning){
+                    if(!audioPermission){
+                        requestAudioPermissions();
+                    }
                     startService(intent);
                     //startAsyncTask(ts);
                 }
@@ -213,6 +231,7 @@ public class MainActivity extends Activity implements SensorEventListener
         SensorName.add("Linear Acceleration");
         SensorName.add("Rotation Vector");
         SensorName.add("Step Count");
+        SensorName.add("Audio");
 
         //System.out.println(sensor.get(i).getName());
 
@@ -232,6 +251,52 @@ public class MainActivity extends Activity implements SensorEventListener
 //        });
 
     }
+
+
+    private void requestAudioPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            //When permission is not granted by user, show them message why this permission is needed.
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.RECORD_AUDIO)) {
+                Toast.makeText(this, "Please grant permissions to send Audio Stream", Toast.LENGTH_LONG).show();
+                audioPermission = false;
+
+                //Give user option to still opt-in the permissions
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
+
+            } else {
+                // Show user dialog to grant permission to record audio
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
+            }
+        }
+    }
+
+    //Handling callback
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_RECORD_AUDIO: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    audioPermission = true;
+                    // permission was granted, yay!
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    audioPermission = false;
+                }
+            }
+        }
+    }
+
 
     private void showSelectedItems() {
         String selItems="";

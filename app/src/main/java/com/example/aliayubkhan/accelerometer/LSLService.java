@@ -13,7 +13,11 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 
@@ -38,19 +42,19 @@ public class LSLService extends Service {
     private LSL.StreamInfo accelerometer, light, proximity, linearAcceleration, rotation, gravity, stepCount, audio = null;
 
     // the audio recording options
-    private static final int RECORDING_RATE = 44100;
+    private static final int RECORDING_RATE = 8000;
     private static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     private static final int FORMAT = AudioFormat.ENCODING_PCM_16BIT;
 
 
     // the audio recorder
-    private AudioRecord recorder;
+    private AudioRecord recorder = null;
 
     // the minimum buffer size needed for audio recording
     private static int BUFFER_SIZE = AudioRecord.getMinBufferSize(
             RECORDING_RATE, CHANNEL, FORMAT);
 
-    byte[] buffer = new byte[BUFFER_SIZE];
+    short[] buffer = new short[BUFFER_SIZE];
 
     // are we currently sending audio data
     public static boolean currentlySendingAudio = false;
@@ -85,7 +89,7 @@ public class LSLService extends Service {
                     rotation = new LSL.StreamInfo("Rotation", "EEG", 4, 100, LSL.ChannelFormat.float32, "myuidrotation");
                     gravity = new LSL.StreamInfo("Gravity", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidgravity");
                     stepCount = new LSL.StreamInfo("StepCount", "EEG", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuidstep");
-                    audio = new LSL.StreamInfo("Audio", "audio", 1, 44100, LSL.ChannelFormat.float32, "myuid324457");
+                    audio = new LSL.StreamInfo("Audio", "audio", 1, 8000, LSL.ChannelFormat.float32, "myuid324457");
 
                     //showMessage("Creating an outlet...");
                     //showText("Creating an outlet...");
@@ -176,9 +180,11 @@ public class LSLService extends Service {
 //                ts = Double.parseDouble(format);
 //                System.out.println(ts);
 
-                        readFully(buffer, 0, buffer.length);
+                        recorder.read(buffer, 0, buffer.length);
+                        float[] pcmAsFloats = floatMe(buffer);
+//                        System.out.println(Arrays.toString(pcmAsFloats));
 
-
+                        //https://stackoverflow.com/questions/10324355/how-to-convert-16-bit-pcm-audio-byte-array-to-double-or-float-array
                         assert accelerometerOutlet != null;
                         accelerometerOutlet.push_sample(accelerometerData);
                         lightOutlet.push_sample(lightData);
@@ -189,14 +195,7 @@ public class LSLService extends Service {
                         stepCountOutlet.push_sample(stepCountData);
 //                            System.out.println(Arrays.toString(buffer));
 //                        audioOutlet.push_sample(buffer);
-                        audioOutlet.push_chunk(buffer);
-
-//                try
-//                    sleep(10);
-//                } catch (InterruptedException e) {
-//
-//                    e.printStackTrace();
-//                }
+                        audioOutlet.push_chunk(pcmAsFloats);
                     }
 
                     //Stop service once it finishes its task
@@ -208,6 +207,23 @@ public class LSLService extends Service {
         return Service.START_STICKY;
     }
 
+
+    public static short[] shortMe(byte[] bytes) {
+        short[] out = new short[bytes.length / 2]; // will drop last byte if odd number
+        ByteBuffer bb = ByteBuffer.wrap(bytes);
+        for (int i = 0; i < out.length; i++) {
+            out[i] = bb.getShort();
+        }
+        return out;
+    }
+
+    public static float[] floatMe(short[] pcms) {
+        float[] floaters = new float[pcms.length];
+        for (int i = 0; i < pcms.length; i++) {
+            floaters[i] = pcms[i];
+        }
+        return floaters;
+    }
 
     private void readFully(byte[] data, int off, int length) {
         int read;
@@ -232,8 +248,10 @@ public class LSLService extends Service {
         Log.i(TAG, "Service onDestroy");
         Toast.makeText(this,"Closing LSL!", Toast.LENGTH_SHORT).show();
         MainActivity.stepCounter = 0;
+
         recorder.stop();
         recorder.release();
+
 
         accelerometerOutlet.close();
         accelerometer.destroy();
