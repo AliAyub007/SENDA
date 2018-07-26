@@ -208,14 +208,14 @@ public class LSLService extends Service {
     }
 
 
-    public static short[] shortMe(byte[] bytes) {
-        short[] out = new short[bytes.length / 2]; // will drop last byte if odd number
-        ByteBuffer bb = ByteBuffer.wrap(bytes);
-        for (int i = 0; i < out.length; i++) {
-            out[i] = bb.getShort();
-        }
-        return out;
-    }
+//    public static short[] shortMe(byte[] bytes) {
+//        short[] out = new short[bytes.length / 2]; // will drop last byte if odd number
+//        ByteBuffer bb = ByteBuffer.wrap(bytes);
+//        for (int i = 0; i < out.length; i++) {
+//            out[i] = bb.getShort();
+//        }
+//        return out;
+//    }
 
     public static float[] floatMe(short[] pcms) {
         float[] floaters = new float[pcms.length];
@@ -223,15 +223,6 @@ public class LSLService extends Service {
             floaters[i] = pcms[i];
         }
         return floaters;
-    }
-
-    private void readFully(byte[] data, int off, int length) {
-        int read;
-        while (length > 0) {
-            read = recorder.read(data, off, length);
-            length -= read;
-            off += read;
-        }
     }
 
     @Override
@@ -248,10 +239,6 @@ public class LSLService extends Service {
         Log.i(TAG, "Service onDestroy");
         Toast.makeText(this,"Closing LSL!", Toast.LENGTH_SHORT).show();
         MainActivity.stepCounter = 0;
-
-        recorder.stop();
-        recorder.release();
-
 
         accelerometerOutlet.close();
         accelerometer.destroy();
@@ -281,20 +268,8 @@ public class LSLService extends Service {
             try{
                 recorder.stop();
             }catch(RuntimeException ex){
-                //Ignore
+                recorder.release();
             }
         }
-
-//        try {
-//            mediaPlayer.setDataSource(OUTPUT_FILE);
-//            mediaPlayer.prepare();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        mediaPlayer.start();
-
-//        recorder.stop();
-//        recorder.reset();
-//        recorder.release();
     }
 }
