@@ -108,8 +108,6 @@ public class LSLService extends Service {
 
                     //For Audio
                     try {
-
-
                         recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
                                 RECORDING_RATE, CHANNEL, FORMAT, BUFFER_SIZE * 10);
 
