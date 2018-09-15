@@ -13,7 +13,6 @@ SENDA(Sensor Data Streamer) is an android application to stream real time sensor
 - Step Count
 
 ## Getting Started
----
 #### Development:
 
 In order to start with development you need to follow these steps: 
