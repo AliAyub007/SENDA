@@ -1,24 +1,15 @@
 package com.example.aliayubkhan.accelerometer;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 
 
@@ -30,11 +21,6 @@ public class LSLService extends Service {
 
     private static final String TAG = "LSLService";
 
-
-    Context context;
-    TextView tv;
-
-
     //LSL Outlets
     static LSL.StreamOutlet accelerometerOutlet, lightOutlet, proximityOutlet, linearAccelerationOutlet, rotationOutlet, gravityOutlet, stepCountOutlet, audioOutlet = null;
 
@@ -45,7 +31,6 @@ public class LSLService extends Service {
     private static final int RECORDING_RATE = 8000;
     private static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     private static final int FORMAT = AudioFormat.ENCODING_PCM_16BIT;
-
 
     // the audio recorder
     private AudioRecord recorder = null;
@@ -62,11 +47,6 @@ public class LSLService extends Service {
 
     public LSLService(){
         super();
-    }
-
-    @Override
-    public void onCreate() {
-        //Toast.makeText(this,"Service Created!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -113,23 +93,10 @@ public class LSLService extends Service {
 
                         recorder.startRecording();
 
-//                        while (currentlySendingAudio) {
-//
-//                            // read the data into the buffer
-////                            readFully(buffer, 0, buffer.length);
-//////                            System.out.println(Arrays.toString(buffer));
-////                            audioOutlet.push_sample(buffer);
-//                        }
-
                         Log.d(TAG, "AudioRecord finished recording");
                     } catch (Exception e) {
                         Log.e(TAG, "Exception: " + e);
                     }
-
-//            @SuppressLint("SimpleDateFormat") SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
-//            String format;
-//            double ts;
-//            System.out.println(ts);
 
                     //showText("Sending data...");
                     float[] accelerometerData = new float[3];
@@ -146,10 +113,8 @@ public class LSLService extends Service {
                         accelerometerData[1] = MainActivity.ay;
                         accelerometerData[2] = MainActivity.az;
 
-
                         //Setting Light Data
                         lightData[0] =  MainActivity.lightInt;
-
 
                         //Setting Proximity Data
                         proximityData[0] = MainActivity.proximity;
@@ -158,7 +123,6 @@ public class LSLService extends Service {
                         linearAccelerationData[0] = MainActivity.linear_x;
                         linearAccelerationData[1] = MainActivity.linear_y;
                         linearAccelerationData[2] = MainActivity.linear_z;
-
 
                         //Setting Rotation Data
                         rotationData[0] = MainActivity.rotVec_x;
@@ -174,15 +138,9 @@ public class LSLService extends Service {
                         //Setting Step Data
                         stepCountData[0] = MainActivity.stepCounter;
 
-//                format = s.format(new Date());
-//                ts = Double.parseDouble(format);
-//                System.out.println(ts);
-
                         recorder.read(buffer, 0, buffer.length);
                         float[] pcmAsFloats = floatMe(buffer);
-//                        System.out.println(Arrays.toString(pcmAsFloats));
 
-                        //https://stackoverflow.com/questions/10324355/how-to-convert-16-bit-pcm-audio-byte-array-to-double-or-float-array
                         assert accelerometerOutlet != null;
                         accelerometerOutlet.push_sample(accelerometerData);
                         lightOutlet.push_sample(lightData);
@@ -191,8 +149,6 @@ public class LSLService extends Service {
                         rotationOutlet.push_sample(rotationData);
                         gravityOutlet.push_sample(gravityData);
                         stepCountOutlet.push_sample(stepCountData);
-//                            System.out.println(Arrays.toString(buffer));
-//                        audioOutlet.push_sample(buffer);
                         audioOutlet.push_chunk(pcmAsFloats);
                     }
 
@@ -204,16 +160,6 @@ public class LSLService extends Service {
         MainActivity.isRunning = true;
         return Service.START_STICKY;
     }
-
-
-//    public static short[] shortMe(byte[] bytes) {
-//        short[] out = new short[bytes.length / 2]; // will drop last byte if odd number
-//        ByteBuffer bb = ByteBuffer.wrap(bytes);
-//        for (int i = 0; i < out.length; i++) {
-//            out[i] = bb.getShort();
-//        }
-//        return out;
-//    }
 
     public static float[] floatMe(short[] pcms) {
         float[] floaters = new float[pcms.length];

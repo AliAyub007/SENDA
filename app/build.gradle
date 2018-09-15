@@ -4,6 +4,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion '26.0.2'
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.example.aliayubkhan.accelerometer"
         minSdkVersion 17
         targetSdkVersion 24

@@ -11,11 +11,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -27,18 +25,9 @@ import java.util.List;
 
 public class MainActivity extends Activity implements SensorEventListener
 {
+    @SuppressLint("StaticFieldLeak")
     static TextView tv;
     Button start, stop;
-
-//    void showMessage(String string) {
-//        final String finalString = string;
-//        runOnUiThread(new Runnable(){
-//            @Override
-//            public void run(){
-//                tv.setText(finalString);
-//            }
-//        });
-//    }
 
     static boolean isRunning  = false;
     static int i = 0;
@@ -163,7 +152,6 @@ public class MainActivity extends Activity implements SensorEventListener
                         requestAudioPermissions();
                     }
                     startService(intent);
-                    //startAsyncTask(ts);
                 }
 
             }
@@ -174,28 +162,22 @@ public class MainActivity extends Activity implements SensorEventListener
             @Override
             public void onClick(View v) {
                 stopService(intent);
-                //stopAsyncTask();
             }
         });
 
         tv.setText("Available Streams: ");
-        //showMessage( "Attempting to send LSL markers: ");
-        //setContentView(tv);
+
         msensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
 
         //Setting All sensors
 
         assert msensorManager != null;
         mAccelerometer = msensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-//        mOientation = msensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         mLight = msensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         mProximity = msensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         mGravity = msensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         mLinearAcceleration = msensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         mRotation = msensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-//            mMotion = msensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
-//        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ) {
             mStepCounter = msensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         }
@@ -203,18 +185,12 @@ public class MainActivity extends Activity implements SensorEventListener
 
         //Registering listeners for Sensors
         msensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);//SensorManager.SENSOR_DELAY_FASTEST);
-//        msensorManager.registerListener(this, mOientation, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mGravity, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mLinearAcceleration, SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(this, mRotation, SensorManager.SENSOR_DELAY_NORMAL);
-//        msensorManager.registerListener(this, mMotion, SensorManager.SENSOR_DELAY_NORMAL);
-
         msensorManager.registerListener(this, mStepCounter, SensorManager.SENSOR_DELAY_UI);
-//        msensorManager.registerListener(this, mGeomagnetic, SensorManager.SENSOR_DELAY_NORMAL);
-
-
 
         lv = (ListView) findViewById (R.id.sensors);
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -232,23 +208,6 @@ public class MainActivity extends Activity implements SensorEventListener
         SensorName.add("Rotation Vector");
         SensorName.add("Step Count");
         SensorName.add("Audio");
-
-        //System.out.println(sensor.get(i).getName());
-
-
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                // selected item
-//                String selectedItem = ((TextView) view).getText().toString();
-//                if(selectedItems.contains(selectedItem))
-//                    selectedItems.remove(selectedItem); //remove deselected item from the list of selected items
-//                else
-//                    selectedItems.add(selectedItem); //add selected item to the list of selected items
-//
-//                showSelectedItems();
-//            }
-//
-//        });
 
     }
 
@@ -366,77 +325,5 @@ public class MainActivity extends Activity implements SensorEventListener
         tv.setText(s);
 
     }
-
-//    private class AsyncLSL extends AsyncTask<String, Void, Void> {
-//
-//        @Override
-//        protected Void doInBackground(String... params) {
-//            while (!isCancelled()) {
-//                // Do I/O work
-//                info = new LSL.StreamInfo("Accelerometer", "sensor", 3, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuid324457");
-//
-//                showMessage("Creating an outlet...");
-//                outlet = null;
-//                try {
-//                    outlet = new LSL.StreamOutlet(info);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-////            @SuppressLint("SimpleDateFormat") SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
-////            String format;
-////            double ts;
-////            System.out.println(ts);
-//
-//                showMessage("Sending data...");
-//                float[] sample = new float[3];
-//
-//                while (!checkFlag) {
-//                    sample[0] = ax;
-//                    sample[1] = ay;
-//                    sample[2] = az;
-//
-////                format = s.format(new Date());
-////                ts = Double.parseDouble(format);
-////                System.out.println(ts);
-//                    assert outlet != null;
-//                    outlet.push_sample(sample);
-////                try {
-////                    sleep(10);
-////                } catch (InterruptedException e) {
-////
-////                    e.printStackTrace();
-////                }
-//                }
-//
-//
-//
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            System.out.println("TATASTTDATDABHVDBDANBVDBABDANDADMADMNAVDMANVDMANVDNMVADNNDVAD");
-//        }
-//
-//    }
-//
-//    public void startAsyncTask(String ts){
-//        Toast.makeText(this,"Starting LSL Stream!", Toast.LENGTH_SHORT).show();
-//        lsl_data[i] = new AsyncLSL();
-//        lsl_data[i].execute(ts);
-//    }
-//
-//    public void stopAsyncTask(){
-//        Toast.makeText(this,"Stopping LSL Stream!", Toast.LENGTH_SHORT).show();
-//        tv.setText("Stopped!");
-//        lsl_data[i].cancel(true);
-////        checkFlag = true;
-//        outlet.close();
-//        info.destroy();
-//        i += 1;
-//    }
-
 }
 
