@@ -1,16 +1,16 @@
-package com.example.aliayubkhan.accelerometer;
+package com.example.aliayubkhan.senda;
 
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
-
 
 
 /**
@@ -49,6 +49,9 @@ public class LSLService extends Service {
         super();
     }
 
+    String uniqueID = Build.FINGERPRINT;
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -56,20 +59,21 @@ public class LSLService extends Service {
             Log.i(TAG, "Service onStartCommand");
             Toast.makeText(this,"Starting LSL!", Toast.LENGTH_SHORT).show();
 
+            System.out.println("Unique id is: " + uniqueID);
 
             //Creating new thread for my service
             //Always write your long running tasks in a separate thread, to avoid ANR
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    accelerometer = new LSL.StreamInfo("Accelerometer", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidaccelerometer");
-                    light = new LSL.StreamInfo("Light", "EEG", 1, 100, LSL.ChannelFormat.float32, "myuidlight");
-                    proximity = new LSL.StreamInfo("Proximity", "EEG", 1,100, LSL.ChannelFormat.float32, "myuidproximity");
-                    linearAcceleration = new LSL.StreamInfo("LinearAcceleration", "EEG", 3,100, LSL.ChannelFormat.float32, "myuidlinearacceleration");
-                    rotation = new LSL.StreamInfo("Rotation", "EEG", 4, 100, LSL.ChannelFormat.float32, "myuidrotation");
-                    gravity = new LSL.StreamInfo("Gravity", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidgravity");
-                    stepCount = new LSL.StreamInfo("StepCount", "EEG", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuidstep");
-                    audio = new LSL.StreamInfo("Audio", "audio", 1, 8000, LSL.ChannelFormat.float32, "myuid324457");
+                    accelerometer = new LSL.StreamInfo("Accelerometer", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidaccelerometer"+uniqueID);
+                    light = new LSL.StreamInfo("Light", "EEG", 1, 100, LSL.ChannelFormat.float32, "myuidlight"+uniqueID);
+                    proximity = new LSL.StreamInfo("Proximity", "EEG", 1,100, LSL.ChannelFormat.float32, "myuidproximity"+uniqueID);
+                    linearAcceleration = new LSL.StreamInfo("LinearAcceleration", "EEG", 3,100, LSL.ChannelFormat.float32, "myuidlinearacceleration"+uniqueID);
+                    rotation = new LSL.StreamInfo("Rotation", "EEG", 4, 100, LSL.ChannelFormat.float32, "myuidrotation"+uniqueID);
+                    gravity = new LSL.StreamInfo("Gravity", "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidgravity"+uniqueID);
+                    stepCount = new LSL.StreamInfo("StepCount", "EEG", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuidstep"+uniqueID);
+                    audio = new LSL.StreamInfo("Audio", "audio", 1, 8000, LSL.ChannelFormat.float32, "myuidaudio"+uniqueID);
 
                     //showMessage("Creating an outlet...");
                     //showText("Creating an outlet...");

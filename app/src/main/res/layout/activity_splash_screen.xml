@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="#ffffff"
-    tools:context="com.example.aliayubkhan.accelerometer.SplashScreenActivity">
+    tools:context="com.example.aliayubkhan.senda.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/imageView"

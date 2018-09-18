@@ -1,4 +1,4 @@
-package com.example.aliayubkhan.accelerometer;
+package com.example.aliayubkhan.senda;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;

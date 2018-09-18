@@ -1,4 +1,4 @@
-package com.example.aliayubkhan.accelerometer;
+package com.example.aliayubkhan.senda;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.example.aliayubkhan.accelerometer;
+package com.example.aliayubkhan.senda;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

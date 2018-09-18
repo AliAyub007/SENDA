@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.aliayubkhan.accelerometer">
+    package="com.example.aliayubkhan.senda">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -8,7 +8,7 @@
     <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name" android:supportsRtl="true" android:theme="@style/AppTheme">
 
-        <activity android:name=".SplashScreenActivity" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="com.example.aliayubkhan.senda.SplashScreenActivity" android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,10 +16,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" android:label="Accelerometer"
+        <activity android:name="com.example.aliayubkhan.senda.MainActivity" android:label="Accelerometer"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <service android:name=".LSLService"/>
+        <service android:name="com.example.aliayubkhan.senda.LSLService"/>
     </application>
 
 </manifest>
