@@ -5,10 +5,13 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application android:allowBackup="true" android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" android:supportsRtl="true" android:theme="@style/AppTheme">
 
-        <activity android:name="com.example.aliayubkhan.senda.SplashScreenActivity" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="com.example.aliayubkhan.senda.SplashScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,7 +19,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.aliayubkhan.senda.MainActivity" android:label="SENDA"
+        <activity android:name="com.example.aliayubkhan.senda.MainActivity"
+            android:label="SENDA"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <service android:name="com.example.aliayubkhan.senda.LSLService"/>
