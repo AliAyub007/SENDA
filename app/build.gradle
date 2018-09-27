@@ -34,9 +34,12 @@ android {
         javaMaxHeapSize "2048m"
     }
 
+
 }
 
 dependencies {
+    implementation 'com.android.support:support-v4:24.2.1'
+    implementation 'com.android.support:support-vector-drawable:24.2.1'
     compile fileTree(dir: '../libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

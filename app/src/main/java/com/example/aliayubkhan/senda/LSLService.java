@@ -20,6 +20,14 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static com.example.aliayubkhan.senda.MainActivity.isAccelerometer;
+import static com.example.aliayubkhan.senda.MainActivity.isAudio;
+import static com.example.aliayubkhan.senda.MainActivity.isGravity;
+import static com.example.aliayubkhan.senda.MainActivity.isLight;
+import static com.example.aliayubkhan.senda.MainActivity.isLinearAcceleration;
+import static com.example.aliayubkhan.senda.MainActivity.isProximity;
+import static com.example.aliayubkhan.senda.MainActivity.isRotation;
+import static com.example.aliayubkhan.senda.MainActivity.isStepCounter;
 import static com.example.aliayubkhan.senda.MainActivity.streamingNow;
 import static com.example.aliayubkhan.senda.MainActivity.streamingNowBtn;
 
@@ -62,6 +70,15 @@ public class LSLService extends Service {
     String uniqueID = Build.FINGERPRINT;
     String deviceName = Build.MODEL;
 
+    // Data Variables
+    float[] accelerometerData = new float[3];
+    float[] linearAccelerationData = new float[3];
+    float[] gravityData = new float[3];
+    float[] rotationData = new float[4];
+    float[] lightData = new float[1];
+    float[] proximityData = new float[1];
+    float[] stepCountData = new float[1];
+
     //Wake Lock
     PowerManager.WakeLock wakelock;
 
@@ -102,104 +119,156 @@ public class LSLService extends Service {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    accelerometer = new LSL.StreamInfo("Accelerometer "+deviceName, "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidaccelerometer"+uniqueID);
-                    light = new LSL.StreamInfo("Light "+deviceName, "EEG", 1, 100, LSL.ChannelFormat.float32, "myuidlight"+uniqueID);
-                    proximity = new LSL.StreamInfo("Proximity "+deviceName, "EEG", 1,100, LSL.ChannelFormat.float32, "myuidproximity"+uniqueID);
-                    linearAcceleration = new LSL.StreamInfo("LinearAcceleration "+deviceName, "EEG", 3,100, LSL.ChannelFormat.float32, "myuidlinearacceleration"+uniqueID);
-                    rotation = new LSL.StreamInfo("Rotation "+deviceName, "EEG", 4, 100, LSL.ChannelFormat.float32, "myuidrotation"+uniqueID);
-                    gravity = new LSL.StreamInfo("Gravity "+deviceName, "EEG", 3, 100, LSL.ChannelFormat.float32, "myuidgravity"+uniqueID);
-                    stepCount = new LSL.StreamInfo("StepCount "+deviceName, "EEG", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuidstep"+uniqueID);
-                    audio = new LSL.StreamInfo("Audio "+deviceName, "audio", 1, 8000, LSL.ChannelFormat.float32, "myuidaudio"+uniqueID);
 
-                    //showMessage("Creating an outlet...");
-                    //showText("Creating an outlet...");
-                    try {
-                        accelerometerOutlet = new LSL.StreamOutlet(accelerometer);
-                        lightOutlet = new LSL.StreamOutlet(light);
-                        proximityOutlet = new LSL.StreamOutlet(proximity);
-                        linearAccelerationOutlet = new LSL.StreamOutlet(linearAcceleration);
-                        rotationOutlet = new LSL.StreamOutlet(rotation);
-                        gravityOutlet = new LSL.StreamOutlet(gravity);
-                        stepCountOutlet = new LSL.StreamOutlet(stepCount);
-                        audioOutlet = new LSL.StreamOutlet(audio);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if(isAccelerometer){
+                        accelerometer = new LSL.StreamInfo("Accelerometer "+deviceName, "marker", 3, 100, LSL.ChannelFormat.float32, "myuidaccelerometer"+uniqueID);
+                        try {
+                            accelerometerOutlet = new LSL.StreamOutlet(accelerometer);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
 
-                    //For Audio
-                    try {
-                        recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                                RECORDING_RATE, CHANNEL, FORMAT, BUFFER_SIZE * 10);
-
-                        recorder.startRecording();
-
-                        Log.d(TAG, "AudioRecord finished recording");
-                    } catch (Exception e) {
-                        Log.e(TAG, "Exception: " + e);
+                    if(isLight){
+                        light = new LSL.StreamInfo("Light "+deviceName, "marker", 1, 100, LSL.ChannelFormat.float32, "myuidlight"+uniqueID);
+                        try {
+                            lightOutlet = new LSL.StreamOutlet(light);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
 
-                    //showText("Sending data...");
-                    float[] accelerometerData = new float[3];
-                    float[] linearAccelerationData = new float[3];
-                    float[] gravityData = new float[3];
-                    float[] rotationData = new float[4];
-                    float[] lightData = new float[1];
-                    float[] proximityData = new float[1];
-                    float[] stepCountData = new float[1];
+                    if(isProximity){
+                        proximity = new LSL.StreamInfo("Proximity "+deviceName, "marker", 1,100, LSL.ChannelFormat.float32, "myuidproximity"+uniqueID);
+                        try {
+                            proximityOutlet = new LSL.StreamOutlet(proximity);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    if(isLinearAcceleration){
+                        linearAcceleration = new LSL.StreamInfo("LinearAcceleration "+deviceName, "marker", 3,100, LSL.ChannelFormat.float32, "myuidlinearacceleration"+uniqueID);
+                        try {
+                            linearAccelerationOutlet = new LSL.StreamOutlet(linearAcceleration);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    if(isRotation){
+                        rotation = new LSL.StreamInfo("Rotation "+deviceName, "marker", 4, 100, LSL.ChannelFormat.float32, "myuidrotation"+uniqueID);
+                        try {
+                            rotationOutlet = new LSL.StreamOutlet(rotation);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    if(isGravity){
+                        gravity = new LSL.StreamInfo("Gravity "+deviceName, "marker", 3, 100, LSL.ChannelFormat.float32, "myuidgravity"+uniqueID);
+                        try {
+                            gravityOutlet = new LSL.StreamOutlet(gravity);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    if(isStepCounter){
+                        stepCount = new LSL.StreamInfo("StepCount "+deviceName, "marker", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuidstep"+uniqueID);
+                        try {
+                            stepCountOutlet = new LSL.StreamOutlet(stepCount);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    if(isAudio){
+                        audio = new LSL.StreamInfo("Audio "+deviceName, "audio", 1, 8000, LSL.ChannelFormat.float32, "myuidaudio"+uniqueID);
+                        try {
+                            audioOutlet = new LSL.StreamOutlet(audio);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        //For Audio
+                        try {
+                            recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
+                                    RECORDING_RATE, CHANNEL, FORMAT, BUFFER_SIZE * 10);
+
+                            recorder.startRecording();
+
+                            Log.d(TAG, "AudioRecord finished recording");
+                        } catch (Exception e) {
+                            Log.e(TAG, "Exception: " + e);
+                        }
+                    }
 
                     while (!MainActivity.checkFlag) {
-                        //Setting Accelerometer Data
-                        accelerometerData[0] = MainActivity.ax;
-                        accelerometerData[1] = MainActivity.ay;
-                        accelerometerData[2] = MainActivity.az;
 
                         System.out.println(Arrays.toString(accelerometerData));
 
-                        //Setting Light Data
-                        lightData[0] =  MainActivity.lightInt;
+                        if(isAccelerometer){
+                            //Setting Accelerometer Data
+                            accelerometerData[0] = MainActivity.ax;
+                            accelerometerData[1] = MainActivity.ay;
+                            accelerometerData[2] = MainActivity.az;
+                            accelerometerOutlet.push_sample(accelerometerData);
+                        }
 
-                        //Setting Proximity Data
-                        proximityData[0] = MainActivity.proximity;
+                        if(isLight){
+                            //Setting Light Data
+                            lightData[0] =  MainActivity.lightInt;
+                            lightOutlet.push_sample(lightData);
+                        }
 
-                        //Setting Linear Acceleration Data
-                        linearAccelerationData[0] = MainActivity.linear_x;
-                        linearAccelerationData[1] = MainActivity.linear_y;
-                        linearAccelerationData[2] = MainActivity.linear_z;
+                        if(isProximity){
+                            //Setting Proximity Data
+                            proximityData[0] = MainActivity.proximity;
+                            proximityOutlet.push_sample(proximityData);
+                        }
 
-                        //Setting Rotation Data
-                        rotationData[0] = MainActivity.rotVec_x;
-                        rotationData[1] = MainActivity.rotVec_y;
-                        rotationData[2] = MainActivity.rotVec_z;
-                        rotationData[3] = MainActivity.rotVec_scalar;
+                        if(isLinearAcceleration){
+                            //Setting Linear Acceleration Data
+                            linearAccelerationData[0] = MainActivity.linear_x;
+                            linearAccelerationData[1] = MainActivity.linear_y;
+                            linearAccelerationData[2] = MainActivity.linear_z;
+                            linearAccelerationOutlet.push_sample(linearAccelerationData);
+                        }
 
-                        //Setting Gravity Data
-                        gravityData[0] = MainActivity.grav_x;
-                        gravityData[1] = MainActivity.grav_y;
-                        gravityData[2] = MainActivity.grav_z;
+                        if(isRotation){
+                            //Setting Rotation Data
+                            rotationData[0] = MainActivity.rotVec_x;
+                            rotationData[1] = MainActivity.rotVec_y;
+                            rotationData[2] = MainActivity.rotVec_z;
+                            rotationData[3] = MainActivity.rotVec_scalar;
+                            rotationOutlet.push_sample(rotationData);
+                        }
 
-                        //Setting Step Data
-                        stepCountData[0] = MainActivity.stepCounter;
+                        if(isGravity){
+                            //Setting Gravity Data
+                            gravityData[0] = MainActivity.grav_x;
+                            gravityData[1] = MainActivity.grav_y;
+                            gravityData[2] = MainActivity.grav_z;
+                            gravityOutlet.push_sample(gravityData);
+                        }
 
-                        recorder.read(buffer, 0, buffer.length);
-                        float[] pcmAsFloats = floatMe(buffer);
+                        if(isStepCounter){
+                            //Setting Step Data
+                            stepCountData[0] = MainActivity.stepCounter;
+                            stepCountOutlet.push_sample(stepCountData);
+                        }
 
-//                        System.out.println(Arrays.toString(accelerometerData));
-//                        System.out.println(Arrays.toString(lightData));
-//                        System.out.println(Arrays.toString(proximityData));
-//                        System.out.println(Arrays.toString(linearAccelerationData));
-//                        System.out.println(Arrays.toString(rotationData));
-//                        System.out.println(Arrays.toString(gravityData));
-//                        System.out.println(Arrays.toString(stepCountData));
+                        if(isAudio){
+                            recorder.read(buffer, 0, buffer.length);
+                            float[] pcmAsFloats = floatMe(buffer);
+                            audioOutlet.push_chunk(pcmAsFloats);
+                        }
 
-                        assert accelerometerOutlet != null;
-                        accelerometerOutlet.push_sample(accelerometerData);
-                        lightOutlet.push_sample(lightData);
-                        proximityOutlet.push_sample(proximityData);
-                        linearAccelerationOutlet.push_sample(linearAccelerationData);
-                        rotationOutlet.push_sample(rotationData);
-                        gravityOutlet.push_sample(gravityData);
-                        stepCountOutlet.push_sample(stepCountData);
-                        audioOutlet.push_chunk(pcmAsFloats);
+
                     }
 
                     //Stop service once it finishes its task
@@ -240,35 +309,52 @@ public class LSLService extends Service {
         streamingNow.clearAnimation();
         wakelock.release();
 
-        accelerometerOutlet.close();
-        accelerometer.destroy();
+        if(isAccelerometer){
+            accelerometerOutlet.close();
+            accelerometer.destroy();
+        }
 
-        lightOutlet.close();
-        light.destroy();
+        if(isLight){
+            lightOutlet.close();
+            light.destroy();
 
-        proximityOutlet.close();
-        proximity.destroy();
+        }
 
-        linearAccelerationOutlet.close();
-        linearAcceleration.destroy();
+        if(isProximity){
+            proximityOutlet.close();
+            proximity.destroy();
+        }
 
-        rotationOutlet.close();
-        rotation.destroy();
+        if(isLinearAcceleration){
+            linearAccelerationOutlet.close();
+            linearAcceleration.destroy();
+        }
 
-        gravityOutlet.close();
-        gravity.destroy();
+        if(isRotation){
+            rotationOutlet.close();
+            rotation.destroy();
+        }
 
-        stepCountOutlet.close();
-        stepCount.destroy();
+        if(isGravity){
+            gravityOutlet.close();
+            gravity.destroy();
+        }
 
-        audioOutlet.close();
-        audio.destroy();
+        if(isStepCounter){
+            stepCountOutlet.close();
+            stepCount.destroy();
+        }
 
-        if (null != recorder) {
-            try{
-                recorder.stop();
-            }catch(RuntimeException ex){
-                recorder.release();
+        if(isAudio){
+            audioOutlet.close();
+            audio.destroy();
+
+            if (null != recorder) {
+                try{
+                    recorder.stop();
+                }catch(RuntimeException ex){
+                    recorder.release();
+                }
             }
         }
     }

@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -51,6 +52,17 @@ public class MainActivity extends Activity implements SensorEventListener
 
     //Sensor Names
     Sensor mAccelerometer, mLight, mProximity, mGravity, mLinearAcceleration, mRotation, mStepCounter;
+
+    //Sensors Checklist
+
+    static Boolean isAccelerometer = false;
+    static Boolean isLight = false;
+    static Boolean isProximity = false;
+    static Boolean isGravity = false;
+    static Boolean isLinearAcceleration = false;
+    static Boolean isRotation = false;
+    static Boolean isStepCounter = false;
+    static Boolean isAudio = false;
 
     //Streaming Identification
     @SuppressLint("StaticFieldLeak")
@@ -204,6 +216,7 @@ public class MainActivity extends Activity implements SensorEventListener
 
         tv.setText("Available Streams: ");
 
+
         msensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
 
         //Setting All sensors
@@ -234,7 +247,7 @@ public class MainActivity extends Activity implements SensorEventListener
 
         sensor = msensorManager.getSensorList(Sensor.TYPE_ALL);
 
-        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_view_text, R.id.txt_title, SensorName);
+        adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_view_text, R.id.streamsSelected, SensorName);
         lv.setAdapter(adapter);
 
         SensorName.add("Accelerometer");
@@ -246,6 +259,20 @@ public class MainActivity extends Activity implements SensorEventListener
         SensorName.add("Step Count");
         SensorName.add("Audio");
 
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // selected item
+                String selectedItem = ((TextView) view).getText().toString();
+                if(selectedItems.contains(selectedItem))
+                    selectedItems.remove(selectedItem); //remove deselected item from the list of selected items
+                else
+                    selectedItems.add(selectedItem); //add selected item to the list of selected items
+
+                getSelectedItems();
+            }
+
+        });
     }
 
 
@@ -357,13 +384,38 @@ public class MainActivity extends Activity implements SensorEventListener
         return list.size() > 0;
     }
 
-    private void showSelectedItems() {
-        String selItems="";
+    private void getSelectedItems() {
         for(String item:selectedItems){
-            if(selItems=="")
-                selItems=item;
-            else
-                selItems+="/"+item;
+
+            if(item.contains("Accelerometer")){
+                isAccelerometer = true;
+            }
+            if(item.contains("Light")){
+                isLight = true;
+            }
+            if(item.contains("Proximity")){
+                isProximity = true;
+            }
+            if(item.contains("Gravity")){
+                isGravity = true;
+            }
+            if(item.contains("Linear Acceleration")){
+                isLinearAcceleration = true;
+            }
+            if(item.contains("Rotation Vector")){
+                isRotation = true;
+            }
+            if(item.contains("Step Count")){
+                isStepCounter = true;
+            }
+            if(item.contains("Audio")){
+                isAudio = true;
+            }
+
+//            if(selItems=="")
+//                selItems=item;
+//            else
+//                selItems+="/"+item;
         }
         //Toast.makeText(this, selItems, Toast.LENGTH_LONG).show();
     }
