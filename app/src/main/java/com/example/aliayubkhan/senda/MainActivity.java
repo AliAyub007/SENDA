@@ -34,6 +34,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.aliayubkhan.senda.SettingsActivity.getSamplingRates;
+import static com.example.aliayubkhan.senda.SettingsActivity.samplingRate_set_Check;
+
 public class MainActivity extends Activity implements SensorEventListener
 {
     @SuppressLint("StaticFieldLeak")
@@ -72,6 +75,10 @@ public class MainActivity extends Activity implements SensorEventListener
 
 
     int backButtonCount = 0;
+
+    //Settings button
+
+    ImageView settings_button;
 
     //Requesting run-time permissions
 
@@ -182,6 +189,8 @@ public class MainActivity extends Activity implements SensorEventListener
         stop = (Button)findViewById(R.id.stopLSL);
         streamingNow = (TextView)findViewById(R.id.streamingNow);
         streamingNowBtn = (ImageView) findViewById(R.id.streamingNowBtn);
+        settings_button = (ImageView) findViewById(R.id.settings_btn);
+        settings_button.setVisibility(View.VISIBLE);
 
         requestAudioPermissions();
         startPowerSaverIntent(this);
@@ -200,6 +209,9 @@ public class MainActivity extends Activity implements SensorEventListener
                     if(!audioPermission){
                         requestAudioPermissions();
                     }
+                    if(samplingRate_set_Check){
+                        getSamplingRates();
+                    }
                     startService(intent);
                 }
 
@@ -211,6 +223,14 @@ public class MainActivity extends Activity implements SensorEventListener
             @Override
             public void onClick(View v) {
                 stopService(intent);
+            }
+        });
+
+        settings_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
             }
         });
 

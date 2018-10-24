@@ -18,7 +18,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import static com.example.aliayubkhan.senda.MainActivity.isAccelerometer;
 import static com.example.aliayubkhan.senda.MainActivity.isAudio;
@@ -30,6 +29,13 @@ import static com.example.aliayubkhan.senda.MainActivity.isRotation;
 import static com.example.aliayubkhan.senda.MainActivity.isStepCounter;
 import static com.example.aliayubkhan.senda.MainActivity.streamingNow;
 import static com.example.aliayubkhan.senda.MainActivity.streamingNowBtn;
+import static com.example.aliayubkhan.senda.SettingsActivity.audio_sampling_rate_data;
+import static com.example.aliayubkhan.senda.SettingsActivity.gravity_sampling_rate_data;
+import static com.example.aliayubkhan.senda.SettingsActivity.light_sampling_rate_data;
+import static com.example.aliayubkhan.senda.SettingsActivity.linear_acceleration_sampling_rate_data;
+import static com.example.aliayubkhan.senda.SettingsActivity.proximity_sampling_rate_data;
+import static com.example.aliayubkhan.senda.SettingsActivity.rotation_vector_sampling_rate_data;
+import static com.example.aliayubkhan.senda.SettingsActivity.step_count_sampling_rate_data;
 
 
 /**
@@ -97,6 +103,8 @@ public class LSLService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+            System.out.println("Value of acc is: " + SettingsActivity.accelerometer_sampling_rate_data);
+            System.out.println("Value of audio is: " + SettingsActivity.audio_sampling_rate_data);
 
             streamingNow.setVisibility(View.VISIBLE);
             streamingNowBtn.setVisibility(View.VISIBLE);
@@ -121,7 +129,7 @@ public class LSLService extends Service {
                 public void run() {
 
                     if(isAccelerometer){
-                        accelerometer = new LSL.StreamInfo("Accelerometer "+deviceName, "marker", 3, 100, LSL.ChannelFormat.float32, "myuidaccelerometer"+uniqueID);
+                        accelerometer = new LSL.StreamInfo("Accelerometer "+deviceName, "marker", 3, SettingsActivity.accelerometer_sampling_rate_data, LSL.ChannelFormat.float32, "myuidaccelerometer"+uniqueID);
                         try {
                             accelerometerOutlet = new LSL.StreamOutlet(accelerometer);
                         } catch (IOException e) {
@@ -130,7 +138,7 @@ public class LSLService extends Service {
                     }
 
                     if(isLight){
-                        light = new LSL.StreamInfo("Light "+deviceName, "marker", 1, 100, LSL.ChannelFormat.float32, "myuidlight"+uniqueID);
+                        light = new LSL.StreamInfo("Light "+deviceName, "marker", 1, light_sampling_rate_data, LSL.ChannelFormat.float32, "myuidlight"+uniqueID);
                         try {
                             lightOutlet = new LSL.StreamOutlet(light);
                         } catch (IOException e) {
@@ -139,7 +147,7 @@ public class LSLService extends Service {
                     }
 
                     if(isProximity){
-                        proximity = new LSL.StreamInfo("Proximity "+deviceName, "marker", 1,100, LSL.ChannelFormat.float32, "myuidproximity"+uniqueID);
+                        proximity = new LSL.StreamInfo("Proximity "+deviceName, "marker", 1,proximity_sampling_rate_data, LSL.ChannelFormat.float32, "myuidproximity"+uniqueID);
                         try {
                             proximityOutlet = new LSL.StreamOutlet(proximity);
                         } catch (IOException e) {
@@ -148,7 +156,7 @@ public class LSLService extends Service {
                     }
 
                     if(isLinearAcceleration){
-                        linearAcceleration = new LSL.StreamInfo("LinearAcceleration "+deviceName, "marker", 3,100, LSL.ChannelFormat.float32, "myuidlinearacceleration"+uniqueID);
+                        linearAcceleration = new LSL.StreamInfo("LinearAcceleration "+deviceName, "marker", 3,linear_acceleration_sampling_rate_data, LSL.ChannelFormat.float32, "myuidlinearacceleration"+uniqueID);
                         try {
                             linearAccelerationOutlet = new LSL.StreamOutlet(linearAcceleration);
                         } catch (IOException e) {
@@ -158,7 +166,7 @@ public class LSLService extends Service {
                     }
 
                     if(isRotation){
-                        rotation = new LSL.StreamInfo("Rotation "+deviceName, "marker", 4, 100, LSL.ChannelFormat.float32, "myuidrotation"+uniqueID);
+                        rotation = new LSL.StreamInfo("Rotation "+deviceName, "marker", 4, rotation_vector_sampling_rate_data, LSL.ChannelFormat.float32, "myuidrotation"+uniqueID);
                         try {
                             rotationOutlet = new LSL.StreamOutlet(rotation);
                         } catch (IOException e) {
@@ -168,7 +176,7 @@ public class LSLService extends Service {
                     }
 
                     if(isGravity){
-                        gravity = new LSL.StreamInfo("Gravity "+deviceName, "marker", 3, 100, LSL.ChannelFormat.float32, "myuidgravity"+uniqueID);
+                        gravity = new LSL.StreamInfo("Gravity "+deviceName, "marker", 3, gravity_sampling_rate_data, LSL.ChannelFormat.float32, "myuidgravity"+uniqueID);
                         try {
                             gravityOutlet = new LSL.StreamOutlet(gravity);
                         } catch (IOException e) {
@@ -178,7 +186,7 @@ public class LSLService extends Service {
                     }
 
                     if(isStepCounter){
-                        stepCount = new LSL.StreamInfo("StepCount "+deviceName, "marker", 1, LSL.IRREGULAR_RATE, LSL.ChannelFormat.float32, "myuidstep"+uniqueID);
+                        stepCount = new LSL.StreamInfo("StepCount "+deviceName, "marker", 1, step_count_sampling_rate_data, LSL.ChannelFormat.float32, "myuidstep"+uniqueID);
                         try {
                             stepCountOutlet = new LSL.StreamOutlet(stepCount);
                         } catch (IOException e) {
@@ -187,7 +195,7 @@ public class LSLService extends Service {
                     }
 
                     if(isAudio){
-                        audio = new LSL.StreamInfo("Audio "+deviceName, "audio", 1, 8000, LSL.ChannelFormat.float32, "myuidaudio"+uniqueID);
+                        audio = new LSL.StreamInfo("Audio "+deviceName, "audio", 1, audio_sampling_rate_data, LSL.ChannelFormat.float32, "myuidaudio"+uniqueID);
                         try {
                             audioOutlet = new LSL.StreamOutlet(audio);
                         } catch (IOException e) {
@@ -208,8 +216,6 @@ public class LSLService extends Service {
                     }
 
                     while (!MainActivity.checkFlag) {
-
-                        System.out.println(Arrays.toString(accelerometerData));
 
                         if(isAccelerometer){
                             //Setting Accelerometer Data

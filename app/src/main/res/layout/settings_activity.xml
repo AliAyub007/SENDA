@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="#f2f2f2"
+    tools:context="com.example.aliayubkhan.senda.SettingsActivity">
+
+    <Button
+        android:id="@+id/samplingSetBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape"
+        android:baselineAligned="false"
+        android:text="Set Values"
+        android:textColor="#f2f2f2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <EditText
+        android:id="@+id/audio_sampling_rate"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="65dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="68dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="8000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/audio_sampling_rate_text"
+        app:layout_constraintTop_toBottomOf="@+id/rotation_vector_sampling_rate" />
+
+    <TextView
+        android:id="@+id/audio_sampling_rate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:layout_marginEnd="183dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="57dp"
+        android:text="Audio"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/audio_sampling_rate"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step_count_sampling_rate" />
+
+    <EditText
+        android:id="@+id/rotation_vector_sampling_rate"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginEnd="28dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="12"
+        app:layout_constraintBottom_toTopOf="@+id/step_count_sampling_rate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rotation_vector_sampling_rate_text"
+        app:layout_constraintTop_toBottomOf="@+id/linear_acceleration_sampling_rate" />
+
+    <TextView
+        android:id="@+id/rotation_vector_sampling_rate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="104dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginTop="29dp"
+        android:text="Rotation Vector"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/rotation_vector_sampling_rate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_acceleration_sampling_rate_text" />
+
+    <EditText
+        android:id="@+id/light_sampling_rate"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="55dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="55dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="12"
+        app:layout_constraintBottom_toBottomOf="@+id/proximity_sampling_rate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/light_sampling_rate_text"
+        app:layout_constraintTop_toTopOf="@+id/accelerometer_sampling_rate" />
+
+    <EditText
+        android:id="@+id/proximity_sampling_rate"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="110dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="110dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="12"
+        app:layout_constraintBottom_toBottomOf="@+id/linear_acceleration_sampling_rate_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/proximity_sampling_rate_text"
+        app:layout_constraintTop_toTopOf="@+id/accelerometer_sampling_rate" />
+
+    <TextView
+        android:id="@+id/proximity_sampling_rate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="33dp"
+        android:layout_marginEnd="154dp"
+        android:layout_marginStart="57dp"
+        android:text="Proximity"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/gravity_sampling_rate_text"
+        app:layout_constraintEnd_toStartOf="@+id/proximity_sampling_rate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/light_sampling_rate_text" />
+
+    <EditText
+        android:id="@+id/gravity_sampling_rate"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="57dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="58dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="12"
+        app:layout_constraintBottom_toBottomOf="@+id/linear_acceleration_sampling_rate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/gravity_sampling_rate_text"
+        app:layout_constraintTop_toTopOf="@+id/proximity_sampling_rate" />
+
+    <TextView
+        android:id="@+id/gravity_sampling_rate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:layout_marginEnd="173dp"
+        android:layout_marginStart="57dp"
+        android:text="Gravity"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/linear_acceleration_sampling_rate"
+        app:layout_constraintEnd_toStartOf="@+id/gravity_sampling_rate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/proximity_sampling_rate_text" />
+
+    <EditText
+        android:id="@+id/linear_acceleration_sampling_rate"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginEnd="28dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="12"
+        app:layout_constraintBottom_toTopOf="@+id/rotation_vector_sampling_rate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linear_acceleration_sampling_rate_text"
+        app:layout_constraintTop_toBottomOf="@+id/gravity_sampling_rate_text" />
+
+    <TextView
+        android:id="@+id/linear_acceleration_sampling_rate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="76dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginTop="32dp"
+        android:text="Linear Acceleration"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/linear_acceleration_sampling_rate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gravity_sampling_rate_text" />
+
+    <TextView
+        android:id="@+id/light_sampling_rate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="190dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="57dp"
+        android:text="Light"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/proximity_sampling_rate_text"
+        app:layout_constraintEnd_toStartOf="@+id/light_sampling_rate"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accelerometer_sampling_rate" />
+
+    <EditText
+        android:id="@+id/accelerometer_sampling_rate"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="28dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="12"
+        app:layout_constraintBottom_toTopOf="@+id/light_sampling_rate_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/accelerometer_sampling_rate_text"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <EditText
+        android:id="@+id/step_count_sampling_rate"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="28dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="12"
+        app:layout_constraintBottom_toTopOf="@+id/audio_sampling_rate_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/step_count_sampling_rate_text"
+        app:layout_constraintTop_toBottomOf="@+id/rotation_vector_sampling_rate" />
+
+    <TextView
+        android:id="@+id/accelerometer_sampling_rate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="121dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginTop="28dp"
+        android:text="Acclerometer"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/accelerometer_sampling_rate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/step_count_sampling_rate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="141dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginTop="32dp"
+        android:text="Step Count"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/step_count_sampling_rate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rotation_vector_sampling_rate_text" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="18dp"
+        android:layout_marginTop="16dp"
+        android:cursorVisible="false"
+        android:text="Sampling Rates"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/accelerometer_sampling_rate"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

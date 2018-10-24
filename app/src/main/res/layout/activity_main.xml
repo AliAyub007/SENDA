@@ -16,7 +16,7 @@
     <LinearLayout
         android:id="@+id/linearHorizontal"
         android:layout_width="0dp"
-        android:layout_height="44dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="false"
         android:layout_centerHorizontal="true"
@@ -27,7 +27,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/streamingNowBtn">
+        app:layout_constraintTop_toBottomOf="@+id/settings_btn">
 
         <Button
             android:id="@+id/startLSL"
@@ -100,7 +100,7 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/linearHorizontal"
         app:layout_constraintEnd_toStartOf="@+id/streamingNowBtn"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -111,7 +111,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginBottom="446dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="80dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/rec"
@@ -120,4 +120,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/settings_btn"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="457dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_settings"
+        app:layout_constraintBottom_toTopOf="@+id/linearHorizontal"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="VectorDrawableCompat" />
 </android.support.constraint.ConstraintLayout>
