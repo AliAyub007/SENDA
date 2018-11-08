@@ -51,5 +51,5 @@ This project is licensed under GNU General Public License License - see the [LIC
 ## Cite As: 
 You can cite this work in your research using text below:
 
-    Ali Ayub Khan. (2018, September 15). AliAyub007/SENDA: First Release (Version v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.1419527
+    Ali Ayub Khan. (2018, October 24). AliAyub007/SENDA: New features added (Version 1.0.1). Zenodo. http://doi.org/10.5281/zenodo.1469957
 
